@@ -15,6 +15,57 @@ function App() {
   const signer = provider.getSigner()
   const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 
+  // import the contract abi 
+  const abi = [
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_greeting",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "greet",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_greeting",
+          "type": "string"
+        }
+      ],
+      "name": "setGreeting",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+
+  // create contract object 
+  const contract = new ethers.Contract(contractAddress, abi, signer);
+
   useEffect(() => {
     const connectWallet = async () => {
       provider.send("eth_requestAccounts", []);
