@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 function App() {
 
   const {greet, setGreet} = useState('');
+  const [balance, setBalance] = useState();
   const [greetingValue, setGreetingValue] = useState(''); // note to use [], not {}
   const [depositValue, setDepositValue] = useState(0);
 
@@ -12,15 +13,24 @@ function App() {
 
   const provider = new ethers.providers.Web3Provider(window.ethereum)
   const signer = provider.getSigner()
+  const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 
   useEffect(() => {
     const connectWallet = async () => {
       provider.send("eth_requestAccounts", []);
     }
 
+    const getBalance = async () => {
+      const balance = await provider.getBalance(contractAddress)
+      const balanceFormatted = ethers.utils.formatEther(balance)
+      setBalance(balanceFormatted)
+    }
+
     connectWallet()
       .catch(console.error)
-    
+
+    getBalance()
+      .catch(console.error)
   })
   
   
@@ -49,8 +59,8 @@ function App() {
       <div className="container">
         <div className="row mt-5">
           <div className="col">
-            <h3>Greeting</h3>
-            <p>Contract Balance: 0</p>
+            <h3>Greetings</h3>
+            <p>Contract Balance: {balance}</p>
           </div>
           <div className="col">
           <form onSubmit={handleDepositSubmit}>
